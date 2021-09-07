@@ -1,6 +1,7 @@
 """
 Author: Ailton Fidelix
 Date: 06/07/2021
+Description: Modbus RTU communication test getting key records
 """
 
 from time import sleep
