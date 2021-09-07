@@ -5,28 +5,28 @@ Description: Modbus RTU communication test getting key records
 """
 
 from time import sleep
-import struct
-import minimalmodbus
+from struct import pack, unpack
+from minimalmodbus import Instrument, MODE_RTU
 import serial
 
 serialPort = '/dev/ttyUSB0'
 flowMeterAddress = 1
 
-instrument = minimalmodbus.Instrument(serialPort, flowMeterAddress)
+instrument = Instrument(serialPort, flowMeterAddress)
 
 instrument.serial.baudrate = 9600
 instrument.serial.bytesize = 8
 instrument.serial.parity = serial.PARITY_NONE
 instrument.serial.stopbits = 1
-instrument.mode = minimalmodbus.MODE_RTU
+instrument.mode = MODE_RTU
 instrument.debug = False
 
 
 def readFloatReg(regOne, regTwo):
     data = (instrument.read_register(
         regOne), instrument.read_register(regTwo))
-    packed_string = struct.pack("HH", *data)
-    unpacked_string = struct.unpack("f", packed_string)[0]
+    packed_string = pack("HH", *data)
+    unpacked_string = unpack("f", packed_string)[0]
     return float("{:.2f}".format(unpacked_string))
 
 
@@ -71,12 +71,12 @@ def readOnOffTotal():
 
 
 def readStreamStrength():
-    print(f'Upstream: {instrument.read_register(93)} Downstream: {instrument.read_register(94)}')
+    print(
+        f'Upstream: {instrument.read_register(93)} Downstream: {instrument.read_register(94)}')
 
 
 def readSignalQuality():
     print(f'Signal quality: {instrument.read_register(92)}')
-
 
 
 if __name__ == '__main__':
