@@ -1,3 +1,8 @@
+"""
+Author: Ailton Fidelix
+Date: 06/07/2021
+"""
+
 from time import sleep
 import struct
 import minimalmodbus
